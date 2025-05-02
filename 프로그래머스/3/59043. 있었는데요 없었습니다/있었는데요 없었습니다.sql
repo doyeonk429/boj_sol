@@ -1,0 +1,9 @@
+-- 코드를 입력하세요
+-- 보호 시작일 보다 입양일이 더 빠른 동물의 아이디와 이름
+-- 
+SELECT o.ANIMAL_ID, o.NAME
+FROM ANIMAL_OUTS o
+LEFT JOIN ANIMAL_INS i
+ON o.ANIMAL_ID = i.ANIMAL_ID
+WHERE o.DATETIME < i.DATETIME
+ORDER BY i.DATETIME ASC;
