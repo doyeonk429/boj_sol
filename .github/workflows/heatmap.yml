@@ -18,9 +18,9 @@ jobs:
       with:
         fetch-depth: 0
     
-    - name: Generate Heatmap
+    - name: Create Python script
       run: |
-        python3 << 'EOF'
+        cat > generate_heatmap.py << 'SCRIPT_END'
         import subprocess
         from datetime import datetime, timedelta
         from collections import defaultdict
@@ -87,26 +87,23 @@ jobs:
         except:
             readme = "# BOJ Solutions\n\n"
         
-        heatmap_section = f'''<!-- HEATMAP:START -->
-## 📊 Commit Activity
-
-![Commit Heatmap](./heatmap.svg)
-
-**Total commits:** {total}
-<!-- HEATMAP:END -->'''
+        heatmap_md = "<!-- HEATMAP:START -->\n## 📊 Commit Activity\n\n![Commit Heatmap](./heatmap.svg)\n\n**Total commits:** " + str(total) + "\n<!-- HEATMAP:END -->"
         
         if '<!-- HEATMAP:START -->' in readme:
             import re
             readme = re.sub(r'<!-- HEATMAP:START -->.*?<!-- HEATMAP:END -->', 
-                          heatmap_section, readme, flags=re.DOTALL)
+                          heatmap_md, readme, flags=re.DOTALL)
         else:
-            readme = heatmap_section + '\n\n' + readme
+            readme = heatmap_md + '\n\n' + readme
         
         with open('README.md', 'w') as f:
             f.write(readme)
         
         print(f"✅ Done! Total: {total} commits")
-        EOF
+        SCRIPT_END
+    
+    - name: Run script
+      run: python3 generate_heatmap.py
     
     - name: Commit changes
       run: |
