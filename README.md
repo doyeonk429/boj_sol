@@ -3,7 +3,7 @@
 
 ![Commit Heatmap](./heatmap.svg)
 
-**Total commits:** 402
+**Total commits:** 390
 <!-- HEATMAP:END -->
 
 # boj_sol
